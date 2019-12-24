@@ -8,25 +8,21 @@ import {
     // useParams
 } from "react-router-dom";
 
-class Landing extends React.Component {
-    constructor() {
-        super();
-        this.state = {title: "Landing"};
-    }
-    render() {
-        return (
-            <div className="">
-                <div className="clearfix  px-5" style={{background:"   rgba(181, 64, 73, 0.8)"}}>
-                    <div id="headline-container">
-                        <h1 id="headline">Gournal</h1>
+const Landing = () => {
+    return(
+        <div className="">
+            <div className="px-5 pt-5" style={{background:"   rgba(181, 64, 73, 0.8)", minHeight: "42vw"}}>
+                <div className="clearfix  mx-5 px-5 pt-5">
+                    <div className="float-left text-white ml-5 mt-5 pt-5">
+                        <h1 className="display-3" >Gournal</h1>
                         <h3>Catat transaksi dengan mudah dan efisien </h3>
                         <Link to="/dashboard"><button type="button" className="btn shadow btn-light h3">Lihat lebih lanjut</button></Link>
                     </div>
-                    <img className="img-fluid" id="img-hero" style={{width: "35vw"}} src="https://cdn2.iconfinder.com/data/icons/isometric-concepts-1/256/Accounting-512.png" alt="Gournal Hero"/>
+                    <img className="float-right img-fluid mr-5" style={{width: "30vw"}} src={require('../../assets/img/bank.png')} alt="Gournal Hero"/>
                 </div>
             </div>
-        );
-    }
+        </div>
+    )
 }
 
 export default Landing;

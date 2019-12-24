@@ -29,13 +29,13 @@ const Dashboard = ({routes},{route}) => {
         <div className="col-lg-9 pt-0">
           <div className="clearfix">
             <h4>Dashboard</h4>
-            <ul className="nav nav-tabs px-2">
+            <div data-toggle="a">
               <DashboardItem dashboardURL="/dashboard/jurnalumum" dashboardTitle="Jurnal Umum"/>
               <DashboardItem dashboardURL="/dashboard/jurnalpenyesuaian" dashboardTitle="Jurnal Penyesuaian"/>
               <DashboardItem dashboardURL="/dashboard/bukubesar" dashboardTitle="Buku Besar"/>
               <DashboardItem dashboardURL="/dashboard/neraca" dashboardTitle="Neraca"/>
               <DashboardItem dashboardURL="/dashboard/laporankeuangan" dashboardTitle="Laporan Keuangan"/>
-            </ul>
+            </div>
           </div>
           <div className="mt-3">
             <DefaultDashboard />

@@ -1,11 +1,17 @@
 import React from 'react';
 // import update from 'react-addons-update';
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import moment from 'moment';
 
 const CatatTransaksi = props => {
 
     const day = moment(new Date().now).format("DD")
+
+    const initialMetaState = {
+        transactionNumber: '',
+        date: moment(new Date().now).format("DDMMYYYY"),
+        description: ''
+    }
 
     const emptyFormState = {
         key: 0,
@@ -32,29 +38,36 @@ const CatatTransaksi = props => {
         },
     ]
 
-    const [emptyEntry, setEmptyEntries] = React.useState(initialFormState)
-    const [entry, setEntries] = React.useState(initialFormState)
+    const [metaEntry, setMetaEntry] = React.useState(initialMetaState)
+    const [emptyEntry, setEmptyEntry] = React.useState(initialFormState)
+    const [entry, setEntry] = React.useState(initialFormState)
+
+    const handleMetaChange = (e) => {
+        const {name, value} = e.target;
+        setMetaEntry({ ...metaEntry, [name]: value })
+    }
 
     const handleInputChange = (e, itemKey) => {
         const {name, value} = e.target;
-        console.log("name: ", name, "value: ", value);
-        console.log("itemKey: ", itemKey);
-        setEntries( { ...entry, [itemKey]: {...entry[itemKey], key: itemKey, [name]: value} } );
+        // console.log("name: ", name, "value: ", value);
+        // console.log("itemKey: ", itemKey);
+        setEntry( { ...entry, [itemKey]: {...entry[itemKey], key: itemKey, [name]: value} } );
     }
 
     const handleAddTransaction = () => {
         emptyFormState.key = emptyEntry.length;
-        console.log(emptyFormState);
-        setEntries( { ...entry, [emptyFormState.key]: {...emptyFormState} } );
-        setEmptyEntries( [ ...emptyEntry, emptyFormState ] );
+        // console.log(emptyFormState);
+        setEntry( { ...entry, [emptyFormState.key]: {...emptyFormState} } );
+        setEmptyEntry( [ ...emptyEntry, emptyFormState ] );
     }
     
     return (
         <div className="mt-3 p-3 card rounded-lg">
-            {console.log("entry: ", entry)}
-            {console.log("emptryEntry: ", emptyEntry)}
+            {console.log("metaEntry: ", metaEntry)}
+            {/* {console.log("entry: ", entry)}
+            {console.log("emptryEntry: ", emptyEntry)} */}
             <div className="date">
-                <h5><Moment format="DD MMMM YYYY" /></h5>
+                <p className="h5">{moment(new Date().now).format("DD MMMM YYYY")}</p>
             </div>
             <form
                 className="input-group-sm"
@@ -62,8 +75,11 @@ const CatatTransaksi = props => {
                     event.preventDefault()
                     // if (!entry.name || !entry.username) return
                     props.addEntry(entry);
-                    setEntries(initialFormState);
-                    setEmptyEntries(initialFormState);
+                    props.addMeta(metaEntry);
+
+                    setEntry(initialFormState);
+                    setEmptyEntry(initialFormState);
+                    setMetaEntry(initialMetaState);
                 }}
             >
                 {emptyEntry.map(
@@ -112,7 +128,7 @@ const CatatTransaksi = props => {
                                 className="form-control mr-1"
                                 placeholder="0"
                                 aria-describedby="inputGroupPrepend2"
-                                required
+                                // required
                             />
                             <select
                                 className="form-control form-control-sm col-2 p-0"
@@ -130,7 +146,8 @@ const CatatTransaksi = props => {
                 <input
                     type="text"
                     name="description"
-                    onChange={handleInputChange}
+                    value={metaEntry.description}
+                    onChange={handleMetaChange}
                     className="form-control mr-1 rounded-lg"
                     // id="validation"
                     placeholder="Keterangan"

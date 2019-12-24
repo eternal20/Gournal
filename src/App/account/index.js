@@ -17,19 +17,19 @@ class Account extends React.Component {
     }
     render() {
         return (
-            <div class="container p-3" id="hero">
-                <div class="row">
-                    <div class="col-lg-8">
+            <div className="container p-3">
+                <div className="row">
+                    <div className="col-lg-8">
                         <div className="">
-                            col-sm-8
+                            
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div className="col-lg-4">
                         <div className="">
                             <div className="btn-group-vertical form-account">
-                                <button type="button" class="btn mb-1 shadow-sm btn-light">Sign in with Google</button>
-                                <button type="button" class="btn mb-1 shadow-sm btn-primary">Sign in with Facebook</button>
-                                <button type="button" class="btn mb-1 shadow-sm btn-dark">Sign in with Apple</button>
+                                <button type="button" className="btn mb-1 shadow-sm btn-light">Sign in with Google</button>
+                                <button type="button" className="btn mb-1 shadow-sm btn-primary">Sign in with Facebook</button>
+                                <button type="button" className="btn mb-1 shadow-sm btn-dark">Sign in with Apple</button>
                                 <Login/>
                                 --------------
                                 <Register/>

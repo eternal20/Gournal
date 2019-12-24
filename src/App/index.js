@@ -25,10 +25,12 @@ const routes = [
   {
     path: "/dashboard",
     component: Dashboard,
+    subtitle: "Dashboard",
     routes: [
       {
         path: "/dashboard/jurnalumum",
-        component: JurnalUmum
+        component: JurnalUmum,
+        subtitle: "ini jurnal umum"
       },
       {
         path: "/dashboard/jurnalpenyesuaian",
@@ -48,45 +50,43 @@ const routes = [
       }
     ]
   },
-  {path: "/about", component: About},
-  {path: "/landing", component: Landing},
-  {path: "/account", component: Account},
-  {path: "/", component: Landing},
-  {path: "/event", component: Event}
+  {path: "/about", component: About, subtitle: "About"},
+  {path: "/landing", component: Landing, subtitle: ""},
+  {path: "/account", component: Account, subtitle: "Account"},
+  {path: "/", component: Landing, subtitle: ""},
+  {path: "/event", component: Event, subtitle: ""}
 ];
 
-class App extends React.Component {
-  // constructor() {
-  //     super();
-  // }
-  render() {
-      return(
-        <main>
-          <Router>
-            <Navbar/>
-              <div style={{minHeight: "31rem"}}>
-                <Switch>
-                  {routes.map((route, i) => (
-                    <RouteWithSubRoutes key={i} {...route} />
-                    ))}
-                </Switch>
-              </div>
-            <Footer/>
-          </Router>
-        </main>
-      );
-  }
-}
+const App = () => {
 
-function RouteWithSubRoutes(route) {
-  return (
-    <Route
-      path={route.path}
-      render={props => (
-        // pass the sub-routes down to keep nesting
-        <route.component {...props} routes={route.routes} />
-      )}
-    />
+  const RouteWithSubRoutes = route => {
+    console.log(route.subtitle);
+    document.title = (!route.subtitle?"":route.subtitle+" - ")+"Gournal";
+    return (
+      <Route
+        path={route.path}
+        render={props => (
+          // pass the sub-routes down to keep nesting
+          <route.component {...props} routes={route.routes} />
+        )}
+      />
+    );
+  }
+
+  return(
+    <main>
+      <Router>
+        <Navbar/>
+          <div style={{minHeight: "42vw"}}>
+            <Switch>
+              {routes.map((route, i) => (
+                <RouteWithSubRoutes key={i} {...route} />
+                ))}
+            </Switch>
+          </div>
+        <Footer/>
+      </Router>
+    </main>
   );
 }
 

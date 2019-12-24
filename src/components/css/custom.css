@@ -1,8 +1,12 @@
 .card, .btn, .form-control { border-radius: 0; }
 
-@import url('https://fonts.googleapis.com/css?family=Alatsi|Baskervville&display=swap');
-p, div, h1, h2, h3, h4, h5, h6, a.navbar-brand{
+@import url('https://fonts.googleapis.com/css?family=Alatsi|Lato:400,700&display=swap');
+h1, h2, h3, h4, h5, h6, a.navbar-brand{
     font-family: 'Alatsi', sans-serif;
+}
+p, div{
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
 }
 
 p, span, a, label, button, input, div, button{
