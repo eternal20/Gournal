@@ -1,12 +1,12 @@
 .card, .btn, .form-control { border-radius: 0; }
 
-@import url('https://fonts.googleapis.com/css?family=Alatsi|Lato:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Alatsi:400|Lato:400,700&display=swap');
 h1, h2, h3, h4, h5, h6, a.navbar-brand{
     font-family: 'Alatsi', sans-serif;
 }
 p, div{
     font-family: 'Lato', sans-serif;
-    font-weight: 700;
+    /* font-weight: 700; */
 }
 
 p, span, a, label, button, input, div, button{
@@ -34,6 +34,26 @@ p, span, a, label, button, input, div, button{
     border-bottom: 1px solid #DDD;
 }
 
+.topbar{
+    display: none;
+    margin-top: 3.5rem;
+}
+
+.id-card{
+    text-align: left;
+    color: white;
+    padding: 1rem;
+    /* background: linear-gradient(330deg, #FFC371, #FF5F6D); */
+    background: linear-gradient(150deg, #FF5F6D, #f9d423);
+    /* background: linear-gradient(330deg, #ffe259, #FF5F6D);  */
+    /* background: linear-gradient(330deg, #fbd786, #f7797d); */
+    height: 12rem;
+    width: 19.5rem;
+    border-radius: 0.5rem;
+    margin: 0 auto 0 auto;
+    box-shadow: 0px 0px 16px -3px rgba(0,0,0,0.44);
+}
+
 .img-middle{
     top: -50%;
     bottom: -50%;
@@ -50,18 +70,16 @@ p, span, a, label, button, input, div, button{
 
 #hero{
     background: #FF5F6D;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #FFC371, #FF5F6D);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(130deg, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    /* background: -webkit-linear-gradient(to right, #FFC371, #FF5F6D);  Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(330deg, #FFC371, #FF5F6D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    min-height: 100vh;
+    padding-top: 10vh;
 }
 
 #headline-container{
-    display: inline;
-    float: left;
+    float: right;
     font-size: 4vw;
-    width: 65%;
-    padding: 6rem 0 0 3rem;
-    position: absolute;
+    margin: 15vh 10vw 10vw auto;
     color: white;
 }
 
@@ -70,23 +88,28 @@ p, span, a, label, button, input, div, button{
 }
 
 #img-hero{
-    display: inline;
-    float: right;
-    width: 50%;
-    padding-top: 2rem;
-    z-index: 1;
+    float: left;
+    width: 100%;
 }
 
 #navbar-buffer{
     height: 3.5rem;
-    background-color: white;
 }
 
+#JournalBlockOptionDesktop{
+    display: block;
+}
+#JournalBlockOptionMobile{
+    display: none;
+}
 .form-account{
     display: block;
     margin: auto;
     width: 18rem;
     /* width: 80%; */
+}
+.dashboard-item{
+    width: 35rem;
 }
 
 .list-group{
@@ -135,23 +158,15 @@ a.tools-link{
 }
 
 @media (max-width: 991.98px) {
+.topbar{
+    height: 40vh;
+    display: block;
+}
 
 .container43{
     width: 100%;
 }
 
-#img-hero, #headline-container, #headline{
-    display: block;
-    float: none;
-    width: 100%;
-    font-size: 7vw;
-    padding: 1rem 1rem 0 1rem;
-    text-align: center;
-}
-
-#img-hero{
-    padding-top: 40vw;
-}
 .tools-item{
     width: 32%;
 }
@@ -168,19 +183,40 @@ a.tools-link{
 
 .sticky-center{
     width: 40vw;
-} 
+}
 
 }
 
 @media (max-width: 767.98px) {
     .tools-item{
         width: 48%;
-    }    
+    }
+
+    #headline-container{
+        text-align: center;
+        margin: 0 0 10vw 0;
+        float: none;
+    }
+
+    #img-hero{
+        margin: 5vw 10% 0 10%;
+        width: 80%;
+    }
 }
 
 @media (max-width: 576.98px) {
     .tools-item{
         width: 98%;
+    }
+    .topbar{
+        height: 91.5vh;
+        display: block;
+    }
+    #JournalBlockOptionDesktop{
+        display: none;
+    }
+    #JournalBlockOptionMobile{
+        display: block;
     }
        
 }

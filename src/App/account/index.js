@@ -1,48 +1,40 @@
-import React from 'react';
-import Login from "../../components/Login"
-import Register from "../../components/Register"
-// import {
-//     // BrowserRouter as Router,
-//     // Switch,
-//     // Route,
-//     Link,
-//     // useRouteMatch,
-//     // useParams
-// } from "react-router-dom";
+import React, {  } from 'react';
+import {withAuthorization} from '../../Session';
+import Profile from "../../components/Profile"
+import ChangePassword from "../../components/ChangePassword"
+// import Register from "../../components/Register"
+import SignOutButton from "./SignOut"
+import {
+    // BrowserRouter as Router,
+    // Switch,
+    // Route,
+    // Link,
+    // useRouteMatch,
+    // useParams
+    // withRouter,
+} from "react-router-dom";
 
-class Account extends React.Component {
-    constructor() {
-        super();
-        this.state = {title: "Account"};
-    }
-    render() {
-        return (
-            <div className="container p-3">
-                <div className="row">
-                    <div className="col-lg-8">
-                        <div className="">
-                            
-                        </div>
-                    </div>
-                    <div className="col-lg-4">
-                        <div className="">
-                            <div className="btn-group-vertical form-account">
-                                <button type="button" className="btn mb-1 shadow-sm btn-light">Sign in with Google</button>
-                                <button type="button" className="btn mb-1 shadow-sm btn-primary">Sign in with Facebook</button>
-                                <button type="button" className="btn mb-1 shadow-sm btn-dark">Sign in with Apple</button>
-                                <Login/>
-                                --------------
-                                <Register/>
-                            </div>
-                            <div>
-                                
-                            </div>
-                        </div>
-                    </div>
+const Account = () => {
+    return(
+        <div className="mt-3">
+            <div className="row m-0">
+                <div className="col-lg-4 pb-5 text-center">
+                    <Profile />
+                    <br/>
+                    <SignOutButton />
+                </div>
+                <div className="col-lg-3 pt-0">
+                    <ChangePassword />
+                </div>
+                <div className="col-lg-2 pt-0">
+                </div>
+                <div className="col-lg-2 pt-0">
                 </div>
             </div>
-        );
-    }
+        </div>
+    )
 }
 
-export default Account;
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Account);

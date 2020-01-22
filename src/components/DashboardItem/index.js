@@ -13,7 +13,7 @@ const DashboardItem = props => {
     return (
         <Link
             to={props.dashboardURL}
-            class={"btn btn-outline-dark rounded-lg border shadow-sm mr-1 mb-1 pt-1 "+((window.location.pathname === props.dashboardURL)?"active":"")}
+            className={"btn btn-outline-dark d-inline-block rounded-lg border shadow-sm mr-1 my-2 pt-1 "+((window.location.pathname === props.dashboardURL)?"active":"")}
         >
             <span>{props.dashboardTitle}</span>
             {/* <i className="fas fa-arrow-circle-right"></i> */}

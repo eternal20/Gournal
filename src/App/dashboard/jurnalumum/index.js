@@ -1,81 +1,91 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 // import update from 'react-addons-update';
 import 'moment-timezone';
 // import moment from 'moment';
 import CatatTransaksi from '../CatatTransaksi';
-import JournalTable from '../JournalTable';
+// import JournalTable from '../JournalTable';
+import JournalBlock from '../JournalBlock'
+import { withFirebase } from '../../../Firebase';
 
-const meta = {
-    transactionNumber: '',
-    date: '',
-    description: ''
-}
+const JurnalUmum = withFirebase(props => {
 
-const JurnalUmum = () => {
-
-    
-
-    const entriesData = [
-        {
-            key: 0,
-            date: '5',
-            uraian: 'wqwq',
-            nominal: 2121,
-            jenis: 'kredit',
-
-        },
-        {
-            key: 1,
-            date: '6',
-            uraian: 'Akumulasi Penyusutan',
-            nominal: 45465,
-            jenis: 'debit',
-        }
-    ];
-
-    const [entries, setEntries] = React.useState(entriesData);
-    const addEntry = entry => {
-        console.log(entry)
-        
-        entry = Object.keys(entry).map(i => entry[i])
-        console.log(entry)
-        entry.forEach(
-            item=>{
-                item.key = item.key + entries.length;
-            }
-        )
-        setEntries([...entries, ...entry]);
+    const initialEntriesData = {
+        isLoading: true,
+        data: null
     };
+    const [alert, setAlert] = React.useState({
+        isShow: false,
+        component: (
+            <div className="alert alert-warning mt-3 alert-dismissible fade show" role="alert">
+                Transaksi berhasil dicatat.
+                <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                    <h5 aria-hidden="true">&times;</h5>
+                </button>
+            </div>
+        )
+    })
 
-    const [metaEntries, setMetaEntries] = React.useState(meta);
-    const addMeta = metaEntry => {
-        console.log(metaEntry)
-        setMetaEntries( metaEntry )
-    }
+    const [entries, setEntries] = React.useState(initialEntriesData);    
+    
+    useEffect(()=>{
+        const listener = props.firebase.auth.onAuthStateChanged(authUserSrc=>{
+            props.firebase.transactions(authUserSrc.uid,"jurnalumum").on( 'value', snapshot => {
+                // console.log(snapshot);
+                // console.log(snapshot.val());
+
+                const transactionsObject = snapshot.val();
+                const transactionsList = !transactionsObject?null:Object.keys(transactionsObject).map(item => ({
+                        ...transactionsObject[item],
+                        key: item
+                    }))
+
+                setEntries({isLoading: false, data: transactionsList && transactionsList.reverse()});
+            });
+        });
+        return listener();
+    },[props.firebase])
+    
+    // console.log(entries)
+
+    const addEntry = (entry, metaEntry) => {
+        props.firebase.auth.onAuthStateChanged(authUserSrc=>{
+            return props.firebase
+                .transactions(authUserSrc.uid,"jurnalumum").push()
+                .set({
+                    ...metaEntry, transaction: entry
+                })
+        });
+        setAlert({...alert, isShow: true});
+    };
 
     const deleteEntry = key => {
         console.log(key)
-        setEntries(entries.filter(entry => entry.key !== key))
+        props.firebase.auth.onAuthStateChanged(authUserSrc=>{
+            props.firebase.transactions(authUserSrc.uid,"jurnalumum").child(key).remove()
+        });
+
     };
 
-    // console.log(entries);
     return (
         <div className="clearfix mb-2">
-            {console.log(entries)}
-            {console.log(metaEntries)}
             <h4>Jurnal Umum</h4>
-            <div className="card card-body rounded shadow-sm d-block">
-                <button className="btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#inputTransaction" aria-expanded="false" aria-controls="collapseExample">
-                    Catat Transaksi
-                </button>
-                <div className="collapse" id="inputTransaction">
-                    <CatatTransaksi addEntry={addEntry} addMeta={addMeta}/>
-                </div>
-                    <JournalTable entries={entries} deleteEntry={deleteEntry}/>
+            <button className="btn btn-sm rounded-lg btn-primary d-block" type="button" data-toggle="collapse" data-target="#inputTransaction" aria-expanded="false">
+                Catat Transaksi
+            </button>
+            {alert.isShow && alert.component}
+            <div className="collapse hidden" id="inputTransaction">
+                <CatatTransaksi addEntry={addEntry}/>
+            </div>
+            {console.log(entries)}
+            {/* {entries && <JournalBlock entries={entries} deleteEntry={deleteEntry}/>} */}
+            <div className="mt-3">
+                {entries.isLoading && <span>Memuat</span>}
+                <JournalBlock items={entries} deleteEntry={deleteEntry}/>
             </div>
         </div>
     );
 }
+)
 
 // function syncTransaction(e){
 //     console.log('The form was change.');

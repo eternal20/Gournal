@@ -6,16 +6,20 @@ import moment from 'moment';
 const CatatTransaksi = props => {
 
     const day = moment(new Date().now).format("DD")
+    const month = moment(new Date().now).format("MMMM")
+    const year = moment(new Date().now).format("YYYY")
 
     const initialMetaState = {
-        transactionNumber: '',
-        date: moment(new Date().now).format("DDMMYYYY"),
-        description: ''
+        day: day,
+        month: month,
+        year: year,
+        transaction: [],
+        description: '',
     }
 
     const emptyFormState = {
         key: 0,
-        date: day,
+        // date: day,
         uraian: '',
         nominal: '',
         jenis: 'kredit'
@@ -47,74 +51,96 @@ const CatatTransaksi = props => {
         setMetaEntry({ ...metaEntry, [name]: value })
     }
 
+    const lastEntry = emptyEntry.length - 1;    
+    const subset = Object.keys(entry).slice(0,lastEntry)
+    const debitArr = Object.keys(subset).map( itemKey => {
+        return entry[itemKey].jenis==="debit"?parseInt(entry[itemKey].nominal):0;
+    });
+    const kreditArr = Object.keys(subset).map( itemKey => {
+        return entry[itemKey].jenis==="kredit"?parseInt(entry[itemKey].nominal):0;
+    });
+    // console.log(debitArr, kreditArr)
+
+    const totalDebit = debitArr.reduce((cnt,o)=>{return cnt + o; }, 0);
+    const totalKredit = kreditArr.reduce((cnt,o)=>{return cnt + o; }, 0);
+    // console.log(totalDebit, totalKredit)
+
+    const totalBalance = totalDebit - totalKredit
+    entry[lastEntry].nominal = isNaN(totalBalance)?'':totalBalance;
+    
+    const isInvalid = totalBalance<=0?true:false || entry[lastEntry].jenis === "debit"
+    
     const handleInputChange = (e, itemKey) => {
         const {name, value} = e.target;
-        // console.log("name: ", name, "value: ", value);
-        // console.log("itemKey: ", itemKey);
-        setEntry( { ...entry, [itemKey]: {...entry[itemKey], key: itemKey, [name]: value} } );
+        const val = name==="nominal"?parseInt(value):value
+        setEntry( { ...entry, [itemKey]: { ...entry[itemKey], key: itemKey, [name]: val} });
     }
 
     const handleAddTransaction = () => {
         emptyFormState.key = emptyEntry.length;
-        // console.log(emptyFormState);
-        setEntry( { ...entry, [emptyFormState.key]: {...emptyFormState} } );
+        setEntry( { ...entry,
+            [emptyFormState.key]: {...emptyFormState},
+        } );
+        entry[emptyFormState.key - 1].jenis = "";
         setEmptyEntry( [ ...emptyEntry, emptyFormState ] );
     }
-    
+
+    const submitEntry = event => {
+        props.addEntry(entry, metaEntry);
+        setEntry(initialFormState);
+        setEmptyEntry(initialFormState);
+        setMetaEntry(initialMetaState);
+        event.preventDefault()
+    }
+
     return (
         <div className="mt-3 p-3 card rounded-lg">
-            {console.log("metaEntry: ", metaEntry)}
-            {/* {console.log("entry: ", entry)}
-            {console.log("emptryEntry: ", emptyEntry)} */}
+            {/* {console.log("metaEntry: ", metaEntry)}
+            {console.log("entry: ", entry)} */}
+            {/* {Object.keys(entry).map(items =>
+                items.map(item => console.log(item))    
+            )} */}
+            {/* {console.log("emptryEntry: ", emptyEntry)} */}
             <div className="date">
                 <p className="h5">{moment(new Date().now).format("DD MMMM YYYY")}</p>
             </div>
             <form
                 className="input-group-sm"
-                onSubmit={event => {
-                    event.preventDefault()
-                    // if (!entry.name || !entry.username) return
-                    props.addEntry(entry);
-                    props.addMeta(metaEntry);
-
-                    setEntry(initialFormState);
-                    setEmptyEntry(initialFormState);
-                    setMetaEntry(initialMetaState);
-                }}
+                onSubmit={submitEntry}
             >
                 {emptyEntry.map(
                     item=>(
                         <div className="input-group input-group-sm row m-0 mb-1" key={item.key}>
                             {/* {console.log("uraian: ", entry[item.key].uraian)} */}
                             <select
-                                className="form-control form-control-sm mr-1 col-3"
+                                className="form-control form-control-sm mr-1 col-md-3"
                                 value={entry[item.key].uraian}
                                 name="uraian"
                                 onChange={(e)=>handleInputChange(e, item.key)}
-                                // onChange={handleInputChange}
+                                required
                             >
-                                <option value="default" hidden>Ref | Uraian</option>
-                                <optgroup label="10 | Umum">
-                                    <option value="kas">11 | Kas</option>
-                                    <option value="piutangDagang">12 | Piutang dagang</option>
-                                    <option value="perlengkapan">13 | Perlengkapan</option>
-                                    <option value="peralatan">14 | Peralatan</option>
-                                    <option value="sewaDiMuka">15 | Sewa dibayar di muka</option>
-                                    <option value="akumulasiPenyusutan">19 | Akumulasi penyusutan</option>
+                                <option value="" hidden>Uraian</option>
+                                <optgroup label="Umum">
+                                    <option value="Kas">Kas</option>
+                                    <option value="Piutang Dagang">Piutang dagang</option>
+                                    <option value="Perlengkapan">Perlengkapan</option>
+                                    <option value="Peralatan">Peralatan</option>
+                                    <option value="Sewa di Muka">Sewa dibayar di muka</option>
+                                    <option value="Akumulasi Penyusutan">Akumulasi penyusutan</option>
                                 </optgroup>
-                                <optgroup label="20 | Modal">
-                                    <option value="utangDagang">21 | Utang dagang</option>
-                                    <option value="modal">31 | Modal</option>
-                                    <option value="prive">32 | Prive</option>
-                                    <option value="pendapatan">41 | Pendapatan</option>
+                                <optgroup label="Modal">
+                                    <option value="Utang Dagang">Utang dagang</option>
+                                    <option value="Modal">Modal</option>
+                                    <option value="Prive">Prive</option>
+                                    <option value="Pendapatan">Pendapatan</option>
                                 </optgroup>
-                                <optgroup label="50 | Beban">
-                                    <option value="bebanPerlengkapan">51 | Beban perlengkapan</option>
-                                    <option value="gaji">52 | Beban gaji</option>
-                                    <option value="bebanSewa">53 | Beban sewa</option>
-                                    <option value="bebanListrik">54 | Beban listrik</option>
-                                    <option value="bebanTelepon">55 | Beban telepon</option>
-                                    <option value="bebanPenyusutan">57 | Beban penyusutan</option>
+                                <optgroup label="Beban">
+                                    <option value="Beban Perlengkapan">Beban perlengkapan</option>
+                                    <option value="Gaji">Beban gaji</option>
+                                    <option value="Beban Sewa">Beban sewa</option>
+                                    <option value="Beban Listrik">Beban listrik</option>
+                                    <option value="Beban Telepon">Beban telepon</option>
+                                    <option value="Beban Penyusutan">Beban penyusutan</option>
                                 </optgroup>
                             </select>
                             <div className="input-group-prepend">
@@ -124,19 +150,21 @@ const CatatTransaksi = props => {
                                 value={entry[item.key].nominal}
                                 name="nominal"
                                 onChange={(e)=>handleInputChange(e, item.key)}
-                                type="number"
-                                className="form-control mr-1"
+                                type="text"
+                                step="1"
+                                className="form-control mr-1 text-right col-md-6"
                                 placeholder="0"
                                 aria-describedby="inputGroupPrepend2"
-                                // required
+                                required
                             />
                             <select
-                                className="form-control form-control-sm col-2 p-0"
+                                className="form-control form-control-sm col-md-3 p-0"
                                 name="jenis"
                                 value={entry[item.key].jenis}
                                 onChange={(e)=>handleInputChange(e, item.key)}
+                                required
                             >
-                                <option disabled>Jenis Transaksi</option>
+                                <option value="" hidden >Jenis Transaksi</option>
                                 <option value="debit" >Debit</option>
                                 <option value="kredit" >Kredit</option>
                             </select>
@@ -154,23 +182,28 @@ const CatatTransaksi = props => {
                     aria-describedby="inputGroupPrepend2"
                     // required
                 />
+                {metaEntry.error && "wkwk"}
                 <button
                     type="button"
-                    className="btn-sm btn-primary mt-1"
+                    className="btn btn-sm btn-primary mt-1"
                     onClick={handleAddTransaction}
                 >
                     Tambah transaksi
                 </button>
                 <button
-                    className="btn-sm btn-warning float-right mt-1"
+                    className={`btn btn-sm float-right mt-1 ${isInvalid?"btn-warning":"btn-primary"}`}
                     type="submit"
+                    disabled={isInvalid}
                 >
-                    Submit form
+                    {isInvalid && <span>Transaksi tidak valid!</span>}
+                    {!isInvalid && <span>Catat</span>}
                 </button>
             </form>
         </div>
     );
+       
 }
+
 
 // function syncTransaction(e){
 //     console.log('The form was change.');

@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "gournal-d912d": {
+      "hosting": {
+        "primary": [
+          "gournal"
+        ]
+      }
+    }
+  }
+}

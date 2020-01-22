@@ -1,6 +1,8 @@
 import React from "react";
 import DashboardItem from '../../components/DashboardItem';
-import Profile from '../../components/Profile';
+import Tools from '../../components/Tools';
+// import Profile from '../../components/Profile';
+import {withAuthorization} from '../../Session';
 import {
   // BrowserRouter as Router,
   Switch,
@@ -19,33 +21,28 @@ import {
 const Dashboard = ({routes},{route}) => {
 
   return (
-    <div className="">
-      <div className="row my-3 mx-5">
-        <div className="col-lg-3 pt-0">
-          <div className="sticky-top" style={{top:"4.5rem"}}>
-            <Profile/>
+    <div className="row">
+      <div className="col-md-8">
+        <div className="overflow-auto sticky-top bg-white" style={{top: "3.5rem"}}>
+          <div data-toggle="a" className="dashboard-item">
+          <DashboardItem dashboardURL="/dashboard/jurnalumum" dashboardTitle="Jurnal Umum"/>
+          <DashboardItem dashboardURL="/dashboard/jurnalpenyesuaian" dashboardTitle="Jurnal Penyesuaian"/>
+          <DashboardItem dashboardURL="/dashboard/bukubesar" dashboardTitle="Buku Besar"/>
+          <DashboardItem dashboardURL="/dashboard/neraca" dashboardTitle="Neraca"/>
+          <DashboardItem dashboardURL="/dashboard/laporankeuangan" dashboardTitle="Laporan Keuangan"/>
           </div>
         </div>
-        <div className="col-lg-9 pt-0">
-          <div className="clearfix">
-            <h4>Dashboard</h4>
-            <div data-toggle="a">
-              <DashboardItem dashboardURL="/dashboard/jurnalumum" dashboardTitle="Jurnal Umum"/>
-              <DashboardItem dashboardURL="/dashboard/jurnalpenyesuaian" dashboardTitle="Jurnal Penyesuaian"/>
-              <DashboardItem dashboardURL="/dashboard/bukubesar" dashboardTitle="Buku Besar"/>
-              <DashboardItem dashboardURL="/dashboard/neraca" dashboardTitle="Neraca"/>
-              <DashboardItem dashboardURL="/dashboard/laporankeuangan" dashboardTitle="Laporan Keuangan"/>
-            </div>
-          </div>
-          <div className="mt-3">
-            <DefaultDashboard />
-            <Switch>
-              {routes.map((route, i) => (
-                <RouteWithSubRoutes key={i} {...route} />
-              ))}
-            </Switch>
-          </div>
+        <DefaultDashboard />
+        <div className="px-1">
+          <Switch>
+            {routes.map((route, i) => (
+              <RouteWithSubRoutes key={i} {...route} />
+            ))}
+          </Switch>
         </div>
+      </div>
+      <div className="col-md-4">
+        <Tools/>
       </div>
     </div>
   );
@@ -72,11 +69,13 @@ const RouteWithSubRoutes = (route) => {
 const DefaultDashboard = () => {
   if(window.location.pathname === "/dashboard"){
     return (
-      <h5 className="p-3 bg-light rounded-lg">Pilih tab di atas untuk menampilkan tabel</h5>
+      <h5 className="p-3 bg-light rounded-lg shadow-sm">Pilih tab di atas untuk menampilkan tabel</h5>
     )
   }else{
     return ''
   }
 }
 
-export default Dashboard;
+const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(Dashboard);

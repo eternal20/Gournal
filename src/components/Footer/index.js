@@ -10,7 +10,7 @@ import React from 'react';
 // } from "react-router-dom";
 
 const container = (
-    <div  className="bg-dark w-100 text-light">
+    <footer  className="bg-dark w-100 text-light">
         <div className="mx-5 p-2 clearfix">
             <ul className="list-inline float-left">
                 <li className="list-inline-item">
@@ -35,7 +35,7 @@ const container = (
                 </li>
             </ul> */}
         </div>
-    </div>
+    </footer>
     
 )
 

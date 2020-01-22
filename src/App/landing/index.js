@@ -1,4 +1,5 @@
 import React from 'react';
+// import {withAuthorization} from '../../Session';
 import {
     // BrowserRouter as Router,
     // Switch,
@@ -6,23 +7,50 @@ import {
     Link,
     // useRouteMatch,
     // useParams
+    withRouter
 } from "react-router-dom";
+import {AuthUserContext} from '../../Session';
 
-const Landing = () => {
+const LandingPage = () => {
     return(
         <div className="">
-            <div className="px-5 pt-5" style={{background:"   rgba(181, 64, 73, 0.8)", minHeight: "42vw"}}>
-                <div className="clearfix  mx-5 px-5 pt-5">
-                    <div className="float-left text-white ml-5 mt-5 pt-5">
-                        <h1 className="display-3" >Gournal</h1>
-                        <h3>Catat transaksi dengan mudah dan efisien </h3>
-                        <Link to="/dashboard"><button type="button" className="btn shadow btn-light h3">Lihat lebih lanjut</button></Link>
-                    </div>
-                    <img className="float-right img-fluid mr-5" style={{width: "30vw"}} src={require('../../assets/img/bank.png')} alt="Gournal Hero"/>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top">
+                <Link className="navbar-brand" to="/landing">Gournal</Link>
+                <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/about">About</Link>
+                    </li>
+                </ul>
+                <Link to="/signin" className=" ml-auto btn rounded-lg btn-outline-light mr-1">Masuk</Link>
+            </nav>
+            <div className="row mx-0" id="hero">
+                <div className="col-md-1"></div>
+                <div className="col-md-5">
+                    <img className="img-fluid" id="img-hero" src={require('../../assets/img/bank.png')} alt="Gournal Hero"/>
                 </div>
+                <div className="col-md-5">
+                    <div id="headline-container">
+                        <h1>Gournal</h1>
+                        <h5>Catat transaksi dengan mudah dan efisien </h5>
+                        <Link to="/dashboard"><button type="button" className="btn shadow btn-light">Lihat lebih lanjut</button></Link>
+                    </div>
+                </div>
+                <div className="col-md-1"></div>
             </div>
         </div>
     )
 }
 
-export default Landing;
+const Landing = props => (
+    <div>
+        <AuthUserContext.Consumer>
+            { authState => (
+                authState.authUser
+                ?props.history.push("/dashboard")
+                :<LandingPage authState={authState} />
+            )}
+        </AuthUserContext.Consumer>
+    </div>
+)
+
+export default withRouter(Landing);
