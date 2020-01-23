@@ -70,7 +70,7 @@ const NavbarAuth = props =>{
         </div>
         <nav className="navbar navbar-dark bg-danger fixed-top navbar-expand-lg">
             <div className="container p-0 row mx-auto">
-                <div className="col p-0">
+                <div className="col pl-2">
                     <button className="btn d-lg-none rounded-lg p-1 float-left" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                         <img
                         src={

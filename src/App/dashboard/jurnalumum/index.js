@@ -39,7 +39,7 @@ const JurnalUmum = withFirebase(props => {
                         key: item
                     }))
 
-                setEntries({isLoading: false, data: transactionsList && transactionsList.reverse()});
+                setEntries({isLoading: false, data: transactionsList && transactionsList});
             });
         });
         return listener();
@@ -73,7 +73,7 @@ const JurnalUmum = withFirebase(props => {
                 Catat Transaksi
             </button>
             {alert.isShow && alert.component}
-            <div className="collapse hidden" id="inputTransaction">
+            <div className="collapse show" id="inputTransaction">
                 <CatatTransaksi addEntry={addEntry}/>
             </div>
             {console.log(entries)}

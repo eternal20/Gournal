@@ -1,25 +1,22 @@
 import React from 'react';
 // import update from 'react-addons-update';
 // import Moment from 'react-moment';
+
 import moment from 'moment';
 
 const CatatTransaksi = props => {
 
-    const day = moment(new Date().now).format("DD")
-    const month = moment(new Date().now).format("MMMM")
-    const year = moment(new Date().now).format("YYYY")
+    // const month = moment(new Date().now).format("MMMM")
+    // const year = moment(new Date().now).format("YYYY")
 
     const initialMetaState = {
-        day: day,
-        month: month,
-        year: year,
+        date: moment(new Date().now).format("YYYY-MM-DD"),
         transaction: [],
         description: '',
     }
 
     const emptyFormState = {
         key: 0,
-        // date: day,
         uraian: '',
         nominal: '',
         jenis: 'kredit'
@@ -28,14 +25,12 @@ const CatatTransaksi = props => {
     const initialFormState = [
         {
             key: 0,
-            date: day,
             uraian: '',
             nominal: '',
             jenis: 'debit',
         },
         {
             key: 1,
-            date: day,
             uraian: '',
             nominal: '',
             jenis: 'kredit',
@@ -47,7 +42,9 @@ const CatatTransaksi = props => {
     const [entry, setEntry] = React.useState(initialFormState)
 
     const handleMetaChange = (e) => {
-        const {name, value} = e.target;
+        let {name, value} = e.target;
+        value = name==="date"?moment(value, "YYYY-MM-DD").unix():value
+        console.log(name, value, metaEntry);
         setMetaEntry({ ...metaEntry, [name]: value })
     }
 
@@ -101,13 +98,28 @@ const CatatTransaksi = props => {
                 items.map(item => console.log(item))    
             )} */}
             {/* {console.log("emptryEntry: ", emptyEntry)} */}
-            <div className="date">
-                <p className="h5">{moment(new Date().now).format("DD MMMM YYYY")}</p>
-            </div>
             <form
                 className="input-group-sm"
                 onSubmit={submitEntry}
-            >
+            >   
+                <div className="mb-2 row clearfix">
+                    <div className="col-sm-6 mb-1">
+                        <span className="h4">{moment(metaEntry.date).format("D MMMM YYYY")} </span>
+                        <a className="text-decoration-none" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            Ganti
+                        </a>
+                    </div>
+                    <div className="collapse col-sm-6" id="collapseExample">
+                        {/* input tanggal */}
+                        <input
+                            name="date"
+                            type="date"
+                            defaultValue={moment(new Date().now).format("YYYY-MM-DD")}
+                            className="p-1 border w-100"
+                            onChange={handleMetaChange}
+                        />
+                    </div>
+                </div>
                 {emptyEntry.map(
                     item=>(
                         <div className="input-group input-group-sm row m-0 mb-1" key={item.key}>
@@ -185,13 +197,13 @@ const CatatTransaksi = props => {
                 {metaEntry.error && "wkwk"}
                 <button
                     type="button"
-                    className="btn btn-sm btn-primary mt-1"
+                    className="btn btn-sm btn-primary mt-1 rounded-lg"
                     onClick={handleAddTransaction}
                 >
                     Tambah transaksi
                 </button>
                 <button
-                    className={`btn btn-sm float-right mt-1 ${isInvalid?"btn-warning":"btn-primary"}`}
+                    className={`btn btn-sm float-right mt-1 rounded-lg ${isInvalid?"btn-warning":"btn-primary"}`}
                     type="submit"
                     disabled={isInvalid}
                 >

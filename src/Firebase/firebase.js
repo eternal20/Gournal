@@ -58,6 +58,7 @@ class Firebase {
     users = () => this.db.ref(`users`);
 
     transactions = (uid, kind) => this.db.ref(`users/${uid}/transactions/${kind}`)
+    transactionsD = (uid, kind) => this.db.ref(`users/${uid}/transactions/${kind}`).orderByChild('date')
 
 }
 

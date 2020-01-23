@@ -1,5 +1,5 @@
 import React from 'react';
-import {AuthUserContext} from '../../Session';
+// import {AuthUserContext} from '../../Session';
 // import { tsConstructorType } from '@babel/types';
 import {
     // BrowserRouter as Router,
@@ -13,7 +13,7 @@ import {
 const NavbarSide = () => {
     return(
             <div className="sticky-top pt-2" style={{top: "3.5rem"}}>
-                <AuthUserContext.Consumer>
+                {/* <AuthUserContext.Consumer>
                     { authState => authState.authUser?(
                         <div className="card card-body rounded-lg shadow-sm mb-2">
                             <div className="d-inline">
@@ -29,18 +29,18 @@ const NavbarSide = () => {
                                 </div>
 
                             </div>
-                            {/* <div className="m-0 w-100">
+                                <div className="m-0 w-100">
                                 <span>CREATED ON</span><br/>
                                 <span className="h6">12/05</span>
-                            </div> */}
+                            </div>
                         </div>
                     ):null}
-                </AuthUserContext.Consumer>
+                </AuthUserContext.Consumer> */}
+                <form className="form-inline mb-2">
+                    <input className="form-control w-100 rounded-pill" type="search" placeholder="Search" aria-label="Search"/>
+                    {/* <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */}
+                </form>
                 <div className="list-group shadow-sm" id="list-tab" role="tablist">
-                    <form className="form-inline my-2">
-                        <input className="form-control w-100 rounded-lg" type="search" placeholder="Search" aria-label="Search"/>
-                        {/* <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> */}
-                    </form>
                     <Link to="/dashboard" className="list-group-item list-group-item-action active">Dashboard</Link>
                     <Link to="/account" className="list-group-item list-group-item-action">Account</Link>
                 </div>

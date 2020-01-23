@@ -1,43 +1,5 @@
 import React, {Fragment} from 'react'
-
-// const DeleteButton = props => (
-//     <>
-//         {console.log(props.items)}
-//         <button id="JournalBlockOptionMobile" type="button" className="btn btn-sm btn-transparent font-weight-bold float-right" data-toggle="modal" data-target="#modalOption">
-//             ⋮
-//         </button>
-//         <div className="modal fade " id="modalOption" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-//             <div className="modal-dialog modal-dialog-centered" role="document">
-//                 <div className="modal-content">
-//                     <div className="modal-body">
-//                         <a className="dropdown-item" href="/">Sunting</a>
-//                         <button
-//                             className="dropdown-item"
-//                             data-dismiss="modal"
-//                             onClick={()=>props.deleteEntry(props.items.items.key)}
-//                         >
-//                             Hapus transaksi
-//                         </button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//         <div className="btn-group dropleft float-right">
-//             <button id="JournalBlockOptionDesktop" type="button" className="btn btn-sm btn-transparent font-weight-bold" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-//                 ⋮
-//             </button>
-//             <div className="dropdown-menu shadow">
-//                 <a className="dropdown-item" href="/">Sunting</a>
-//                 <button
-//                     className="dropdown-item"
-//                     onClick={()=>props.deleteEntry(props.items.key)}
-//                 >
-//                     Hapus transaksi
-//                 </button>
-//             </div>
-//         </div>
-//     </>
-// )
+import moment from 'moment';
 
 const JournalTable = props =>{
     return props.items.isLoading?null:
@@ -58,7 +20,7 @@ const JournalTable = props =>{
                         <Fragment key={key}>
                             <tr>
                                 <th scope="row" rowSpan={items.transaction.length+1}>
-                                    <span className="h4">{items.day}</span> {items.month}
+                                    <span className="h4">{ moment(items.date).format("D") }</span> { moment(items.date).format("MMMM") }
                                 </th>
                                 <th colSpan="2" >{items.description?<span>{items.description}</span>:<span>Tidak ada keterangan</span>}</th>
                                 <td>
