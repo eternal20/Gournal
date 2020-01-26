@@ -8,9 +8,8 @@ const CatatTransaksi = props => {
 
     // const month = moment(new Date().now).format("MMMM")
     // const year = moment(new Date().now).format("YYYY")
-
     const initialMetaState = {
-        date: moment(new Date().now).format("YYYY-MM-DD"),
+        date: moment(new Date().now).unix(),
         transaction: [],
         description: '',
     }
@@ -104,7 +103,7 @@ const CatatTransaksi = props => {
             >   
                 <div className="mb-2 row clearfix">
                     <div className="col-sm-6 mb-1">
-                        <span className="h4">{moment(metaEntry.date).format("D MMMM YYYY")} </span>
+                        <span className="h4">{moment.unix(metaEntry.date).format("D MMMM YYYY")} </span>
                         <a className="text-decoration-none" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                             Ganti
                         </a>

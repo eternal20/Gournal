@@ -1,77 +1,64 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import moment from 'moment';
 
-const JournalTable = props =>{
-
-    return props.uraian.map(
-        (uraian, key) => {
-            const transactionsList = !props.items.data?null:props.items.data.map(item => 
-                ({
-                    ...item,
-                    transaction: item.transaction.filter(item => item.uraian===uraian )
-                })
-            ).filter(item => item.transaction.length > 0)
-
-            const transactionExtract = transactionsList && transactionsList.map(item => ({...item.transaction.map(item => ({nominal: item.nominal, jenis: item.jenis}))}))
-            const saldo = transactionExtract && transactionExtract.map(item => item["0"])
-            let subSaldo = 0;
-            const totalSaldo = saldo && saldo.map(item =>{
-                console.log(item.jenis, item.nominal)
-
-                subSaldo = item.jenis==="debit"?(subSaldo + item.nominal):(subSaldo - item.nominal);
-                return {
-                    subSaldo: subSaldo
-                }
-            })
-            console.log(transactionsList && transactionsList)
-            console.log(saldo && saldo)
-            console.log(totalSaldo && totalSaldo)
-
-            return props.items.isLoading || transactionsList.length<=0 ?null:
+const JournalTable = props => {
+    console.log(props.data)
+    // return 0
+    return !props.data.isLoading && props.data.data.map(
+        (item, key) =>  item.subSaldo<=0 ? "Kosong":
             (
                 <div className="card card-body shadow-sm rounded-lg mb-3" key={key}>
-                    <h5>{uraian}</h5>
-                    <table className="table table-sm mb-0">
-                        <thead>
-                            <tr>
-                            <th scope="col" className="p-1">Tanggal</th>
-                            <th scope="col" className="text-right p-1">Debit</th>
-                            <th scope="col" className="text-right p-1">Kredit</th>
-                            <th scope="col" className="text-right p-1">Saldo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactionsList?transactionsList.map((items, transactionKey)=>(
-                                <Fragment key={transactionKey}>
-                                    {items.transaction.map( (entry, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>{ moment.unix(items.date).format("D") } { moment.unix(items.date).format("MMM") }</td>
-                                            {entry.jenis==="debit"
-                                            ?   <><td className="text-right p-1">Rp{entry.nominal}</td>
-                                                <td></td></>
-                                            :   <><td></td>
-                                                <td className="text-right p-1">Rp{entry.nominal}</td></>
-                                            }
-                                            <td className="text-right">Rp{totalSaldo[transactionKey].subSaldo}</td>
+                    <h5>{item.uraian}</h5>
+                    <div className="m-1">
+                        <div className="">
+                            <div id="table-scroll" className="table-scroll border">
+                                <table className="table main-table table-sm my-0 table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th rowSpan="2" className="align-middle" >Tanggal</th>
+                                            <th scope="col" colSpan="2" className="text-center">Transaksi</th>
+                                            <th scope="col" colSpan="2" className="text-center">Saldo</th>
+                                            {/* <th rowSpan="2" className="align-middle" >Saldo</th> */}
                                         </tr>
-                                    )
-                                    } ) }
-                                </Fragment>
-                            )):
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Kosong</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                        <tr>
+                                            <th scope="col" className="text-center">Debit</th>
+                                            <th scope="col" className="text-center">Kredit</th>
+                                            <th scope="col" className="text-center">Debit</th>
+                                            <th scope="col" className="text-center">Kredit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {item && item.subSaldo.map( (entry, index) => (
+                                        <tr key={index}>
+                                            <th>{ moment.unix(entry.date).format("D") } { moment.unix(entry.date).format("MMM") }</th>
+                                            {entry.jenis==="debit"
+                                                ?   <><td className="text-right p-1">Rp{entry.nominal}</td>
+                                                    <td></td></>
+                                                :   <><td></td>
+                                                    <td className="text-right p-1">Rp{entry.nominal}</td></>
+                                            }
+                                            {/* {console.log(entry.saldo, entry.saldo > 0)} */}
+                                            {(entry.saldo > 0)
+                                                ?   (<>
+                                                        <td className="text-right p-1">Rp{entry.saldo}</td>
+                                                        <td></td>
+                                                    </>)
+                                                :   (<>
+                                                        <td></td>
+                                                        <td className="text-right p-1">Rp{(entry.saldo*(-1))}</td>
+                                                    </>)
+                                            }
+                                            {/* <td className="text-right">Rp{entry.saldo}</td> */}
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )
-        }
     )
-
-    
 }
 
 export default JournalTable;

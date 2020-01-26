@@ -8,7 +8,7 @@ const JournalBlock = props =>{
             <div className="row mx-0 ">
                 <div className="col-sm-2 px-1">
                     <span className="d-inline mb-0 h3">{ moment.unix(items.date).format("D") } </span>
-                    <span className="mr-3">{ moment(items.date).format("MMMM") } </span>
+                    <span className="mr-3">{ moment.unix(items.date).format("MMMM") } </span>
                 </div>
                 <div className="col-sm-10 px-1 pt-1">
                     <h5 className="">{items.description?items.description:"Tidak ada keterangan"}

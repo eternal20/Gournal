@@ -21,18 +21,67 @@ p, span, a, label, button, input, div, button{
 .text-shadow{
     text-shadow: 1px 1px 10px #555;
 }
-
-#navbar{
-    background: rgba(181, 64, 73, 0.8);
-    backdrop-filter: saturate(100%) blur(20px);
-    position: fixed;
+.table-scroll {
+    position: relative;
+    width:100%;
+    z-index: 1;
+    margin: auto;
+    overflow: auto;
+    max-height: 60vh;
+  }
+  .table-scroll table {
     width: 100%;
-    z-index: 1030;
-    margin: 0;
-    padding: 0;
+    min-width: auto;
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .table-wrap {
+    position: relative;
+  }
+  .table-scroll th,
+  .table-scroll td {
+    padding: 5px 10px;
+    /* border: 1px solid #000; */
+    background: #fff;
+    vertical-align: top;
+  }
+  .table-scroll thead th {
+    /* background: #333; */
+    /* color: #fff; */
+    position: -webkit-sticky;
+    position: sticky;
     top: 0;
-    border-bottom: 1px solid #DDD;
-}
+  }
+  /* safari and ios need the tfoot itself to be position:sticky also */
+  .table-scroll tfoot,
+  .table-scroll tfoot th,
+  .table-scroll tfoot td {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    /* background: #666; */
+    /* color: #fff; */
+    z-index:4;
+  }
+  
+  thead tr:nth-child(2) th {
+    /* background-color: #ccc; */
+    z-index: 4;
+    top: 1.95rem;
+    /* position: static; */
+  }
+  th:first-child {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    /* background: #ccc; */
+  }
+  thead th:first-child,
+  tfoot th:first-child {
+    z-index: 5;
+  }
 
 .topbar{
     display: none;

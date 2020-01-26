@@ -1,6 +1,5 @@
 import React from "react";
 import DashboardItem from '../../components/DashboardItem';
-import Tools from '../../components/Tools';
 // import Profile from '../../components/Profile';
 import {withAuthorization} from '../../Session';
 import {
@@ -21,8 +20,8 @@ import {
 const Dashboard = ({routes},{route}) => {
 
   return (
-    <div className="row">
-      <div className="col-md-8">
+    <div className="">
+      <div className="">
         <div className="overflow-auto sticky-top bg-white" style={{top: "3.5rem"}}>
           <div data-toggle="a" className="dashboard-item">
           <DashboardItem dashboardURL="/dashboard/jurnalumum" dashboardTitle="Jurnal Umum"/>
@@ -40,9 +39,6 @@ const Dashboard = ({routes},{route}) => {
             ))}
           </Switch>
         </div>
-      </div>
-      <div className="col-md-4">
-        <Tools/>
       </div>
     </div>
   );

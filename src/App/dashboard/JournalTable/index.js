@@ -20,7 +20,7 @@ const JournalTable = props =>{
                         <Fragment key={key}>
                             <tr>
                                 <th scope="row" rowSpan={items.transaction.length+1}>
-                                    <span className="h4">{ moment(items.date).format("D") }</span> { moment(items.date).format("MMMM") }
+                                    <span className="h4">{ moment.unix(items.date).format("D") }</span> { moment.unix(items.date).format("MMMM") }
                                 </th>
                                 <th colSpan="2" >{items.description?<span>{items.description}</span>:<span>Tidak ada keterangan</span>}</th>
                                 <td>

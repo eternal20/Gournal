@@ -1,5 +1,5 @@
 import React from 'react';
-import {AuthUserContext} from '../../Session';
+import { AuthUserContext } from '../../Session';
 // import { tsConstructorType } from '@babel/types';
 import {
     // BrowserRouter as Router,

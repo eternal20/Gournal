@@ -40,11 +40,11 @@ const App = props => {
           ?(
             <>
               <Navbar pageName={route.subtitle}/>
-              <div className="container row mx-auto mt-3 px-0"  style={{minHeight: "100vh"}}>
+              <div className="row container mx-auto mt-3 px-0"  style={{minHeight: "100vh"}}>
                 <div className="col-3 d-none d-lg-block">
                   <NavbarSide/>
                 </div>
-                <div className="col">
+                <div className="col-lg-9">
                   <Route
                     path={route.path}
                     render={props => (

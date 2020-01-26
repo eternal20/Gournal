@@ -5,7 +5,7 @@ import { AuthUserContext } from '../Session';
 const withAuthentication = Component => {
 
     const WithAuthentication = props =>{
-
+        // console.log("withAuthentication: ", props)
         const initialAuthState = {
             defaultUser: {
                 displayName: "User0",
